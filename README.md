@@ -32,13 +32,6 @@ Así podrías clonar máquinas Docker-ready en segundos desde el panel.
 ___________________________
 
 
-Perfecto ✅
-Aquí tienes el **README completo en formato Markdown puro**, listo para colocarlo directamente en tu repositorio de GitHub o documentación interna (`README.md`).
-El formato está totalmente optimizado para su visualización en GitHub, GitLab, Bitbucket o cualquier visor de Markdown.
-
----
-
-````markdown
 # 🧱 Ubuntu Server Base Template Setup  
 ### _Minimal Docker Environment — Golden Image Builder_
 
@@ -221,13 +214,6 @@ Developed by **Rudimental / Alluniux**
 
 > Building the foundation of reliable and autonomous infrastructure.
 
-```
-
----
-
-¿Quieres que te lo prepare también con una **sección de "Quick Copy"** (un bloque compacto de instalación directa con `wget` y ejecución) para que los usuarios solo copien y peguen una línea para ejecutarlo?  
-Puedo añadirlo al principio del README como hacen HashiCorp o Docker en sus docs oficiales.
-```
 
 
 
