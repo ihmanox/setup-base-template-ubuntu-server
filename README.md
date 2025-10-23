@@ -176,7 +176,7 @@ You can extend this setup with:
 
 ## 🧡 Credits
 
-Developed by **Rudimental / Alluniux**
+Developed by **Rudimental / Alluniux** / **Nexor Cloud**
 
 > Building the foundation of reliable and autonomous infrastructure.
 
