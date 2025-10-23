@@ -1,0 +1,79 @@
+#!/bin/bash
+# Script una vez hemos configurado a mano las aplciaciones que queremos y solo nos queda limpiar para convertir en plantilla
+# ╔═══════════════════════════════════════════════════════════════════╗
+# ║   Ubuntu Server Template Cleaner (Docker-ready minimal base)      ║
+# ║   Author: Rudimental / Alluniux                                   ║
+# ║   Description: Cleans identifiers, logs, and temporary data       ║
+# ║   to prepare a Docker-ready Ubuntu template for cloning.          ║
+# ╚═══════════════════════════════════════════════════════════════════╝
+
+set -e
+
+echo "🧹 Starting Ubuntu Template Cleanup..."
+
+# ──────────────────────────────────────────────
+# 1️⃣ Stop Docker containers (optional, if any running)
+# ──────────────────────────────────────────────
+if systemctl is-active --quiet docker; then
+  echo "🐳 Stopping Docker containers..."
+  docker ps -q | xargs -r docker stop
+fi
+
+# ──────────────────────────────────────────────
+# 2️⃣ Clear Docker data (optional)
+# ──────────────────────────────────────────────
+read -p "❗ Do you want to remove all Docker images, volumes, and containers? (y/N): " CONFIRM
+if [[ "$CONFIRM" =~ ^[Yy]$ ]]; then
+  echo "🧨 Removing all Docker data..."
+  docker system prune -a --volumes -f
+fi
+
+# ──────────────────────────────────────────────
+# 3️⃣ Clean system identifiers and SSH keys
+# ──────────────────────────────────────────────
+echo "🔑 Resetting machine identifiers and SSH host keys..."
+truncate -s 0 /etc/machine-id || true
+truncate -s 0 /var/lib/dbus/machine-id || true
+rm -f /etc/ssh/ssh_host_* || true
+
+# ──────────────────────────────────────────────
+# 4️⃣ Clean logs and temporary files
+# ──────────────────────────────────────────────
+echo "🧾 Cleaning logs and temporary files..."
+journalctl --rotate && journalctl --vacuum-time=1s || true
+rm -rf /var/log/* /tmp/* /var/tmp/*
+
+# ──────────────────────────────────────────────
+# 5️⃣ Clear shell and user history
+# ──────────────────────────────────────────────
+echo "🧽 Clearing shell history..."
+HISTFILE=~/.bash_history
+[ -f "$HISTFILE" ] && cat /dev/null > "$HISTFILE"
+history -c || true
+
+# ──────────────────────────────────────────────
+# 6️⃣ Quality-of-life aliases (optional)
+# ──────────────────────────────────────────────
+if ! grep -q "alias ll=" /etc/bash.bashrc; then
+  echo "⚙️ Adding helpful command aliases..."
+  cat <<'EOF' >> /etc/bash.bashrc
+
+# ── Rudimental Base Aliases ─────────────────────────────
+alias ll='ls -lh --color=auto'
+alias cls='clear'
+alias dps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
+EOF
+fi
+
+# ──────────────────────────────────────────────
+# 7️⃣ Final cleanup and sync
+# ──────────────────────────────────────────────
+echo "🧩 Final cleanup..."
+apt clean -y
+sync
+
+echo ""
+echo "✅ Template cleanup complete!"
+echo "⚠️ IMPORTANT: Shut down the system and convert it to a template."
+echo "💡 On next boot, a new machine-id and SSH keys will be generated automatically."
+echo ""
