@@ -155,7 +155,7 @@ After execution, your console will show:
 
 | Field              | Value                                |
 | ------------------ | ------------------------------------ |
-| **Author**         | Rudimental / Alluniux                |
+| **Author**         | Nexor Cloud                          |
 | **Script Version** | 1.0                                  |
 | **Created On**     | October 2025                         |
 | **Purpose**        | Ubuntu Base Image Preparation        |
@@ -176,7 +176,7 @@ You can extend this setup with:
 
 ## 🧡 Credits
 
-Developed by **Rudimental / Alluniux** / **Nexor Cloud**
+Developed by **Rudimental / Nexor Cloud**
 
 > Building the foundation of reliable and autonomous infrastructure.
 
